@@ -1,12 +1,10 @@
+import discord, os
+
 from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from typing import Optional, Union
-import os
-
-import discord
 from discord.ext import commands, tasks
 from discord import utils
-
 from core import checks
 from core.models import PermissionLevel
 from core.time import UserFriendlyTime
@@ -137,7 +135,7 @@ class Reminder(commands.Cog):
             session = EmbedPaginatorSession(ctx, *embeds)
             await session.run()
             
-    @tasks.loop(seconds=10)
+    @tasks.loop(seconds=60)
     async def reminder_task(self):
         await self.bot.wait_until_ready()
         for key, value in self.config.items():
@@ -170,3 +168,4 @@ class Reminder(commands.Cog):
 
 async def setup(bot):
     await bot.add_cog(Reminder(bot))
+    
